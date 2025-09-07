@@ -1,92 +1,147 @@
 # ♟ Chess Games Analysis Dashboard (Power BI)
 
-## 📊 Project Overview
-An end-to-end Power BI project analyzing **20,000+ chess games** from [Lichess Chess Dataset on Kaggle](https://www.kaggle.com/datasets/datasnaek/chess?resource=download).  
-The goal: demonstrate complete workflow — **ETL, star schema modeling, DAX, and interactive dashboards** — as a fresher/entry-level showcase.
+## 📊 Project Overview  
+An end-to-end **Power BI analytics project** analyzing **20,000+ chess games** from the **Lichess Chess Dataset** on Kaggle.  
+
+The goal: demonstrate a complete BI workflow — **ETL**, **star schema modeling**, **30+ DAX measures**, and **interactive dashboards** with storytelling polish — as a **fresher/entry-level showcase**.
 
 ---
 
-## 📂 Dataset
-- **Source:** Kaggle — [Chess Game Dataset (Lichess)](https://www.kaggle.com/datasets/datasnaek/chess?resource=download)  
-- **Scope:** ~20k games with players, ratings, outcome, turns, opening (ECO/name/ply), time control, rated/unrated, timestamps.
+## 📂 Dataset  
+
+- **Source:** [Kaggle – Lichess Chess Dataset](https://www.kaggle.com/)  
+- **Scope:** ~20k games with metadata:  
+  - Players & ratings  
+  - Game outcome (White/Black/Draw)  
+  - Turns  
+  - Opening (ECO code, name, ply)  
+  - Time control  
+  - Rated/Unrated  
+  - Timestamps  
 
 ---
 
-## 🔧 ETL & Data Modeling
-- **ETL in Power Query**: deduplicated game IDs, standardized datatypes, split datetime into usable fields.  
-- **Star Schema Model**:  
-  - **FactGames** – game-level facts (id, ratings, turns, outcome, time control, MatchStarted, opening_eco, etc.)  
-  - **DimDate** – calendar (date, year, quarter, month, day, hour)  
-  - **DimOpening** – ECO code, opening name, ply, ply bucket  
-  - **DimPlayers_White / DimPlayers_Black** – player IDs & ratings  
-- Organized measures into a dedicated **_Measures table** with folders.  
-- Hidden technical keys (IDs, surrogate keys, ECO codes) for a clean field list.  
+## 🔧 ETL & Data Modeling  
+
+- **ETL in Power Query**  
+  - Deduplicated game IDs  
+  - Standardized datatypes  
+  - Split datetime into usable fields  
+
+- **Star Schema Model**  
+
+  **FactGames** – game-level facts (id, ratings, turns, outcome, time control, MatchStarted, opening_eco, etc.)  
+  **DimDate** – calendar (date, year, quarter, month, day, hour)  
+  **DimOpening** – ECO code, opening name, ply, ply bucket  
+  **DimPlayers_White / DimPlayers_Black** – player IDs & ratings  
+
+- Organized measures into a dedicated **_Measures** table with folders:  
+  - Core  
+  - Outcomes  
+  - Ratings  
+  - Time  
+  - Trends  
+  - Openings  
+  - Title  
+  - Player Role  
+  - Keep  
+
+- Hidden technical keys (IDs, surrogate keys, ECO codes) → **clean field list**
 
 ---
 
-## 📐 DAX Highlights
-- Created **22 measures** across different themes (Core, Outcomes, Ratings, Time, Trends, Quality, etc.).  
-- Core: `[Games]`, `[White Wins]`, `[Black Wins]`, `[Draws]`, `[Win %]`, `[Avg Turns]`, `[Avg Rating]`  
-- Time Intelligence: `[Games MTD]`, `[Games YTD]`, `[Games YoY %]`, `[7-Day Rolling Games]`  
-- Tooltip micro-trend: `[Games Last 30 Days]`  
+## 📐 DAX Highlights  
+
+30+ measures created across different themes:
+
+- **Core**: `[Games]`, `[White Wins]`, `[Black Wins]`, `[Draws]`, `[Win %]`, `[Avg Turns]`  
+- **Time Intelligence**: `[Games MTD]`, `[Games YTD]`, `[Games YoY %]`, `[7-Day Rolling Games]`, `[Games Last 30 Days]`  
+- **Ratings**: `[Avg White Rating]`, `[Avg Black Rating]`, `[Avg Rating Diff (White – Black)]`  
+- **Openings**: `[Most Played Opening Name]`, `[Most Played Opening Games]`, `[Top Opening Win %]`  
+- **Dynamic Titles / Summary**: `[Treemap Title]`, `[Bar Title]`, `[Game Details Summary]`  
 
 ---
 
-## 📊 Report Pages
+## 📊 Report Pages  
 
-### 1) **01 – Overview**
-- KPI Cards: Games, Win %, Player Overall Win %, Avg Turns  
-- **Line & Column Chart**: Games per year vs. 7-day rolling average  
-- **Clustered Column**: Outcomes (White / Black / Draws) by month  
-- **Metric Selector**: Field Parameters toggle (Win %, Avg Rating Diff, Avg Turns, Games)  
-- Left-hand **Slicer Panel**: Date range, Rated/Unrated, Opening Ply Bucket, with a Reset button  
-
-### 2) **TT-Info (Custom Tooltip Page)**
-- Canvas sized as Tooltip  
-- Compact KPI Cards: Games MTD, Games YTD  
-- Designed for hover — shows monthly/yearly context at a glance  
-- Attached to charts on Overview  
-
-### 3) **DT – Game Details (Drill-through Page)**
-- Drill-through enabled (Keep All Filters = On)  
-- KPI Cards: Games, Player Overall Win %, Avg Turns, Avg Rating Diff  
-- Detailed **Table**: game id, opening name, time control, rated flag, player ratings, outcome, date parts  
-- Back button for navigation  
+### 1️⃣ Overview  
+- **KPI Cards**: Games, Player Overall Win %, White Win %, Black Win %, Avg Turns  
+- **Line Chart**: Games per year vs. 7-day rolling average  
+- **100% Stacked Column**: White vs Black win % by month  
+- **Clustered Column**: Games by TimeControl  
+- **Donut**: Games by Rated/Unrated  
+- **Left-hand Slicer Panel**: Date range, Rated/Unrated, Opening Ply Bucket  
 
 ---
 
-## 🎨 Features Demonstrated
-- Custom **tooltips** (TT-Info)  
-- **Slicers + Reset** with bookmarks  
-- **Metric Selector** (field parameters)  
-- **Drill-through navigation** (DT-Game Details)  
+### 2️⃣ Players & Ratings  
+- **KPI Cards**: Avg Rating Diff, Games YTD, Games YoY %  
+- **Scatter**: Rating Diff vs Win %  
+- **Clustered Bar**: Rated vs Unrated Win %  
+- **Line (sparkline)**: Games Played (Last 30 Days)  
+
+---
+
+### 3️⃣ Openings Lab  
+- **KPI Cards**: Avg Opening Ply, Most Played Opening (name + games)  
+- **Treemap**: Top 10 openings by games played (ECO → Name)  
+- **Horizontal Bar**: Top 5 openings by Average Turns  
+- **Drillthrough Enabled → Game Details**  
+
+---
+
+### 4️⃣ Game Details (Drill-through Page)  
+- **Dynamic Summary Banner**:  
+  Example →  
+  *“Sicilian Defense — 1,284 games | White 47.8% · Black 49.3% · Draws 2.9% | Avg Turns 54 | Rating Δ 7.3 | Rated | Blitz”*  
+
+- **Detailed Table**: game id, opening name, time control, player ratings, winner, date parts  
+- **Back button for navigation**  
+
+---
+
+## 🎨 Features Demonstrated  
+
+- Dynamic Titles (Year, Rated flag, Ply Bucket)  
+- Drill-through navigation with summary annotation banner  
+- Sidebar Navigation (icons + slicers)  
 - Consistent color theme (White=Blue, Black=Orange, Draw=Gray)  
+- Design polish: ≤4 visuals per page, KPI rows on summary pages, white cards, dark sidebar  
 
 ---
 
-## 🧰 Skills Demonstrated
-- Power Query ETL  
-- Star schema data modeling  
-- DAX (22 measures: aggregations, time intelligence, rolling windows)  
-- Power BI interactivity: slicers, bookmarks, drill-through, tooltips, parameters  
-- Dashboard storytelling & design polish  
+## 🧰 Skills Demonstrated  
+
+- Power Query **ETL**  
+- **Star schema** data modeling  
+- **DAX** (30+ measures: aggregations, time intelligence, dynamic text, rolling windows)  
+- Power BI **interactivity**: slicers, bookmarks, drill-through, parameters  
+- Dashboard **storytelling & design polish**  
 
 ---
 
-## 📸 Screenshots
-- Overview Page  
-  <img width="1519" height="797" alt="Screenshot 2025-09-01 020802" src="https://github.com/user-attachments/assets/354e43ca-3a05-414a-b95b-4d40b9725e9d" />
+## 📸 Screenshots  
 
-- Tooltip Page (TT-Info)  
-  <img width="435" height="327" alt="Screenshot 2025-09-01 020817" src="https://github.com/user-attachments/assets/69e8074b-db07-41df-bb8a-347815a6cdd3" />
+### Overview Page  
+<img width="1107" height="614" alt="Screenshot 2025-09-07 123627" src="https://github.com/user-attachments/assets/f62f2700-3923-4e33-9a11-123357c90358" />
+ 
 
-- Drill-through Page (DT-Game Details)  
-  <img width="1491" height="794" alt="Screenshot 2025-09-01 020832" src="https://github.com/user-attachments/assets/1a75477b-17f7-4c3a-8a47-fbc751b50954" />
+### Players & Ratings Page  
+<img width="1132" height="620" alt="Screenshot 2025-09-07 110631" src="https://github.com/user-attachments/assets/05cb52e0-d11e-47b8-bb87-f2e7bfa7849a" />
+
+### Openings Lab Page  
+<img width="1132" height="621" alt="Screenshot 2025-09-07 110653" src="https://github.com/user-attachments/assets/b287ab4a-d870-4108-9f60-0653f99aaf41" />
+ 
+
+### Game Details Page  
+<img width="1102" height="631" alt="image" src="https://github.com/user-attachments/assets/abbc340e-19dc-4d7f-b4ce-e5af8fb38376" />
+
 
 ---
 
-## ▶️ How to Run
-1. Open `.pbix` in Power BI Desktop.  
-2. Dataset: `games.csv` included (update source path if needed).  
+## ▶️ How to Run  
+
+1. Open `.pbix` in **Power BI Desktop**  
+2. Dataset: `games.csv` included (update source path if needed)  
 
 ---
